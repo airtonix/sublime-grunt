@@ -69,12 +69,13 @@ class GruntRunner(object):
     def list_gruntfiles(self):
         self.grunt_files = []
         self.folders = []
-        for f in self.window.folders():
-            self.folders.append(f)
-            if os.path.exists(os.path.join(f, "Gruntfile.js")):
-                self.grunt_files.append(os.path.join(f, "Gruntfile.js"))
-            elif os.path.exists(os.path.join(f, "Gruntfile.coffee")):
-                self.grunt_files.append(os.path.join(f, "Gruntfile.coffee"))
+
+        for folder in self.window.folders():
+            self.folders.append(folder)
+            for item in os.listdir(folder):
+                if 'gruntfile' in item.lower():
+                    self.grunt_files.append(os.path.join(folder, item))
+
         if len(self.grunt_files) > 0:
             if len(self.grunt_files) == 1:
                 self.choose_file(0)
